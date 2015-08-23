@@ -1,0 +1,92 @@
+{
+    "root": {
+        "struct": {
+            "access": "public",
+            "name": "BearCave",
+            "properties": [
+                {
+                    "name": "Darkness",
+                    "type": "string",
+                    "access": "public"
+                },
+                {
+                    "name": "Depth",
+                    "type": "float",
+                    "access": "public"
+                }
+            ]
+        },
+        "enum": {
+            "access": "public",
+            "name": "BodyTypes",
+            "options": [
+                {
+                    "name": "Small",
+                    "value": "0"
+                },
+                {
+                    "name": "Medium",
+                    "value": "1"
+                },
+                {
+                    "name": "Big",
+                    "value": "2"
+                }
+            ]
+        },
+        "interface": {
+            "name": "IBusiness",
+            "methods": [
+                {
+                    "name": "CreateDumbThing",
+                    "access": "public",
+                    "returnType": "void",
+                    "parameters": [
+                        {
+                            "name": "dumbThing",
+                            "type": "int"
+                        },
+                        {
+                            "name": "dumbThing2",
+                            "type": "float"
+                        }
+                    ]
+                }
+            ]
+        },
+        "class": {
+            "name": "Bear",
+            "inherits": "Animal",
+            "properties": [
+                {
+                    "name": "Height",
+                    "type": "int",
+                    "access": "public"
+                },
+                {
+                    "name": "Weight",
+                    "type": "string",
+                    "access": "public"
+                }
+            ],
+            "methods": [
+                {
+                    "access": "public",
+                    "name": "CreateBear",
+                    "static": "true",
+                    "returnType": "Bear",
+                    "parameters": [
+                        {
+                            "name": "bearsName",
+                            "type": "string"
+                        },
+                        {
+                            "name": "type",
+                            "type": "BearType"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

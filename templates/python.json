@@ -1,0 +1,19 @@
+{
+	"class": {
+		"base": "class {{class_name}}{{optional_class_inherit}}:\n\n\tdef __init__(self):\n{{scaf_prop}}\n{{scaf_method}}",
+		"base_inherits": "({{inherits}})",
+		"prop": "\t\tself.{{prop_name}} = None\n",
+		"method": "\tdef {{method_name}}(self{{scaf_param}}):\n\t\tpass\n\n",
+		"method_param_head": ", {{param_name}}",
+		"method_param_tail": ", {{param_name}}"
+	},
+	"enum": {
+		"base": "class {{enum_name}}(Enum):\n{{scaf_enum_options}}}\n",
+		"option_no_value": "{{option_name}},\n",
+		"option_with_value": "\t{{option_name}} = {{option_value}}\n"
+	},
+	"struct": {
+	},
+	"interface": {
+	}
+}

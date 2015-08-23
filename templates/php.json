@@ -1,0 +1,10 @@
+{
+	"class": {
+		"base":"class {{class_name}}{{optional_class_inherit}}\n{\n{{scaf_prop}}\n{{scaf_method}}\n}",
+		"base_inherits":" extends {{inherits}}",
+		"prop":"\t{{prop_access}} ${{prop_name}} = {{prop_value}};\n",
+		"method":"\t{{method_access}} function {{method_name}}({{scaf_param}}) {\n\t\t\n\t}\n",
+		"method_param_head":"${{param_name}}",
+		"method_param_tail":", ${{param_name}}"
+	}
+}

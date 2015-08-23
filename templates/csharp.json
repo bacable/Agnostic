@@ -1,0 +1,57 @@
+{
+	"typeMap": {
+		"bool": {
+			"name": "bool",
+			"defaultInit": "true"
+		},
+		"int": {
+			"name": "int",
+			"defaultInit": "0"
+		},
+		"double": {
+			"name": "double",
+			"defaultInit": "0.0"
+		},
+		"long": {
+			"name": "long",
+			"defaultInit": "0"
+		},
+		"float": {
+			"name": "float",
+			"defaultInit": "0.0"
+		},
+		"string": {
+			"name": "string",
+			"defaultInit": "string.Empty"
+		},
+		"date": {
+			"name": "DateTime",
+			"defaultInit": "DateTime.Now"
+		},
+		"object": {
+			"name": "{{type_name}}",
+			"defaultInit": "new {{type_name}}()"
+		}
+	},			
+	"class": {
+		"base": "public {{class_name}}{{optional_class_inherit}}\n{\n{{scaf_prop}}\n{{scaf_method}}}",
+		"base_inherits": ": {{inherits}}",
+		"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}} { get; set; }\n",
+		"method": "\t{{method_access}} {{method_return_type}} {{method_name}}({{scaf_param}})\n\t{\n\t\t\n\t}\n\n",
+		"method_param_head": "{{param_type}} {{param_name}}",
+		"method_param_tail": ", {{param_type}} {{param_name}}"
+	},
+	"enum": {
+		"base": "{{enum_access}} enum {{enum_name}}\n{\n{{scaf_enum_options}}}\n",
+		"option_no_value": "{{option_name}},\n",
+		"option_with_value": "\t{{option_name}} = {{option_value}},\n"
+	},
+	"struct": {
+		"base": "{{struct_access}} struct {{struct_name}}\n{\n{{scaf_struct_props}}\n}",
+		"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}};\n"
+	},
+	"interface": {
+		"base": "interface {{interface_name}}\n{{{scaf_interface_props}}\n{{scaf_interface_methods}}\n}",
+		"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}};\n"
+	}
+}

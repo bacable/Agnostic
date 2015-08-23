@@ -1,245 +1,14 @@
-import re
+import re, os, json
 
-templateDict = {
-	"root": {
-		"csharp": {
-			"typeMap": {
-				"bool": {
-					"name": "bool",
-					"defaultInit": "true"
-				},
-				"int": {
-					"name": "int",
-					"defaultInit": "0"
-				},
-				"double": {
-					"name": "double",
-					"defaultInit": "0.0"
-				},
-				"long": {
-					"name": "long",
-					"defaultInit": "0"
-				},
-				"float": {
-					"name": "float",
-					"defaultInit": "0.0"
-				},
-				"string": {
-					"name": "string",
-					"defaultInit": "string.Empty"
-				},
-				"date": {
-					"name": "DateTime",
-					"defaultInit": "DateTime.Now"
-				},
-				"object": {
-					"name": "{{type_name}}",
-					"defaultInit": "new {{type_name}}()"
-				}
-			},			
-			"class": {
-				"base": "public {{class_name}}{{optional_class_inherit}}\n{\n{{scaf_prop}}\n{{scaf_method}}}",
-				"base_inherits": ": {{inherits}}",
-				"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}} { get; set; }\n",
-				"method": "\t{{method_access}} {{method_return_type}} {{method_name}}({{scaf_param}})\n\t{\n\t\t\n\t}\n\n",
-				"method_param_head": "{{param_type}} {{param_name}}",
-				"method_param_tail": ", {{param_type}} {{param_name}}"
-			},
-			"enum": {
-				"base": "{{enum_access}} enum {{enum_name}}\n{\n{{scaf_enum_options}}}\n",
-				"option_no_value": "{{option_name}},\n",
-				"option_with_value": "\t{{option_name}} = {{option_value}},\n"
-			},
-			"struct": {
-				
-			},
-			"interface": {
-				
-			}
-			
-		},
-		"python": {
-			"class": {
-				"base": "class {{class_name}}{{optional_class_inherit}}:\n\n\tdef __init__(self):\n{{scaf_prop}}\n{{scaf_method}}",
-				"base_inherits": "({{inherits}})",
-				"prop": "\t\tself.{{prop_name}} = None\n",
-				"method": "\tdef {{method_name}}(self{{scaf_param}}):\n\t\tpass\n\n",
-				"method_param_head": ", {{param_name}}",
-				"method_param_tail": ", {{param_name}}"
-			},
-			"enum": {
-				"base": "class {{enum_name}}(Enum):\n{{scaf_enum_options}}}\n",
-				"option_no_value": "{{option_name}},\n",
-				"option_with_value": "\t{{option_name}} = {{option_value}}\n"
-			},
-			"struct": {
-			},
-			"interface": {
-			}
-		},
-		"php": {
-		    "class": {
-		        "base":"class {{class_name}}{{optional_class_inherit}}\n{\n{{scaf_prop}}\n{{scaf_method}}\n}",
-		        "base_inherits":" extends {{inherits}}",
-		        "prop":"\t{{prop_access}} ${{prop_name}} = {{prop_value}};\n",
-		        "method":"\t{{method_access}} function {{method_name}}({{scaf_param}}) {\n\t\t\n\t}\n",
-		        "method_param_head":"${{param_name}}",
-		        "method_param_tail":", ${{param_name}}"
-		    }
-		},
-		"objc": {
-		    "typeMap": {
-				"bool": {
-					"name": "bool",
-					"defaultInit": "YES"
-				},
-				"int": {
-					"name": "NSNumber",
-					"defaultInit": "0"
-				},
-				"double": {
-					"name": "NSNumber",
-					"defaultInit": "0.0"
-				},
-				"long": {
-					"name": "NSNumber",
-					"defaultInit": "0"
-				},
-				"float": {
-					"name": "NSNumber",
-					"defaultInit": "0.0"
-				},
-				"string": {
-					"name": "NSString",
-					"defaultInit": "string.Empty"
-				},
-				"date": {
-					"name": "NSDate",
-					"defaultInit": "DateTime.Now"
-				},
-				"object": {
-					"name": "{{type_name}}",
-					"defaultInit": "new {{type_name}}()"
-				}
-			},	
-			"class": {
-				"base": "@interface {{class_name}} : {{optional_class_inherit}} {\n\n}\n\n{{scaf_prop}}\n{{scaf_method}}\n\n@end\n",
-				"base_inherits": "{{inherits}}",
-				"prop": "@property (copy) {{prop_type}} *{{prop_name}};\n",
-				"method": "-({{method_return_type}}*){{method_name}}{{scaf_param}};\n",
-				"method_param_head": ": ({{param_type}}){{param_name}}",
-				"method_param_tail": " {{param_name}}:({{param_type}}){{param_name}}"
-			},
-			"blah": {
-				"base": "@implementation {{class_name}} {\n\n\tdef __init__(self):\n{{scaf_prop}}\n{{scaf_method}}",
-				"base_inherits": "({{inherits}})",
-				"prop": "\t\tself.{{prop_name}} = None\n",
-				"method": "\tdef {{method_name}}(self{{scaf_param}}):\n\t\tpass\n\n",
-				"method_param_head": ", {{param_name}}",
-				"method_param_tail": ", {{param_name}}"
-			},
-			"enum": {
-				"base": "typedef enum {{enum_name}} {\n{{scaf_enum_options}}} {{enum_name}};\n",
-				"option_no_value": "k{{option_name}},\n",
-				"option_with_value": "\tk{{option_name}} = {{option_value}}\n"
-			},
-			"struct": {
-			},
-			"interface": {
-			}
-		}
-	}
-}
-
-
-
-
-meta = {
-  "root": {
-    "enum": {
-      "access": "public",
-      "name": "BodyTypes",
-      "options": [
-        {
-          "name": "Small",
-          "value": "0"
-        },
-        {
-          "name": "Medium",
-          "value": "1"
-        },
-        {
-          "name": "Big",
-          "value": "2"
-        }
-      ]
-    },
-    "interface": {
-      "name": "IBusiness",
-      "methods": [{
-        "name": "CreateDumbThing",
-        "access": "public",
-        "returnType": "void",
-        "parameters": [
-          {
-            "name": "dumbThing",
-            "type": "int"
-          },
-          {
-            "name": "dumbThing2",
-            "type": "float"
-          }
-        ]
-      }]
-    },
-    "class": {
-      "name": "Bear",
-      "inherits": "Animal",
-      "properties": [
-        {
-          "name": "Height",
-          "type": "int",
-          "access": "public"
-        },
-        {
-          "name": "Weight",
-          "type": "string",
-          "access": "public"
-        }
-      ],
-      "methods": [
-          {
-        "access": "public",
-        "name": "CreateBear",
-        "static": "true",
-        "returnType": "Bear",
-        "parameters": [
-          {
-            "name": "bearsName",
-            "type": "string"
-          },
-          {
-            "name": "type",
-            "type": "BearType"
-          }
-        ]
-      }
-      ]
-    },
-  }
-}
-
-def LoadTemplate(language, dict):
-    if language in dict["root"]:
-        return dict["root"][language]
-
-#pseudo
-#        self.class_t = "Class {{class_name}}\n-----------\n\n\tProperties:\n\t-----------\n{{scaf_prop}}\n\n\tMethods:\n\t-----------\n{{scaf_method}}"
-#        self.prop_t = "\t- {{prop_name}}\n"
-#        self.method_t = "\t- {{method_name}}\n"
-
-        
-#tokens = re.findall('{{.*?}}', text.class_t)
+def LoadTemplate(jsonFile):
+    with open(jsonFile) as data_file:
+        data = json.load(data_file)
+    return data
+    
+def LoadStructure(jsonFile):
+    with open(jsonFile) as data_file:
+        data = json.load(data_file)
+    return data
 
 def BuildClass(template, dict):
     if "class" not in template:
@@ -261,6 +30,29 @@ def BuildClass(template, dict):
     text = text.replace("{{scaf_method}}", method_text)
 
     return text
+    
+def BuildStruct(template, dict):
+    if "struct" not in template:
+        return ""
+        
+    tmp = template["struct"]
+    
+    SetTypeMap(template)
+    
+    text = tmp["base"].replace("{{struct_access}}", dict["access"])
+    text = text.replace("{{struct_name}}", dict["name"])
+    
+    prop_text = BuildProperties(tmp, dict["properties"])
+    text = text.replace("{{scaf_struct_props}}", prop_text);
+    
+    return text
+    
+def BuildInterface(template, dict):
+    if "interface" not in template:
+        
+        return ""
+        
+    return ""
 
 def BuildProperties(tmp, dict):
     if "prop" not in tmp:
@@ -326,7 +118,7 @@ def BuildEnum(template, dict):
     enum_option_text = BuildEnumOptions(tmp, dict["options"])
     text = text.replace("{{scaf_enum_options}}", enum_option_text)
     return text
-    
+
 def BuildEnumOptions(tmp, dictOptions):
     if "option_no_value" not in tmp or "option_with_value" not in tmp:
         return ""
@@ -379,25 +171,30 @@ def GetTypeProperty(type, propertyName):
 
 
 
+currentPath = os.path.dirname(os.path.abspath(__file__))
 
+structurePath = os.path.join(currentPath, "structure")
+structureFilename = os.path.join(structurePath, "sampleStruct.json")
+structure = LoadStructure(structureFilename)
 
+templatePath = os.path.join(currentPath, "templates")
+templateFilename = os.path.join(templatePath, "csharp.json")
+template = LoadTemplate(templateFilename)
 
-
-language = "objc"
 result = ""
 
-template = LoadTemplate(language, templateDict)
 
-for objType in meta["root"]:
-    objContents = meta["root"][objType]
+for objType in structure["root"]:
+    objContents = structure["root"][objType]
     
     if objType == 'class':
         result += BuildClass(template, objContents)
-#    elif objType == 'interface':
-#        result += BuildInterface(template, objContents)
+    elif objType == 'interface':
+        result += BuildInterface(template, objContents)
     elif objType == 'enum':
         result += BuildEnum(template, objContents)
-        
+    elif objType == 'struct':
+        result += BuildStruct(template, objContents)
     result += "\n"
         
 print(result)
