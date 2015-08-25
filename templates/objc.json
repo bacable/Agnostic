@@ -1,0 +1,59 @@
+{
+    "typeMap": {
+        "bool": {
+            "name": "bool",
+            "defaultInit": "YES"
+        },
+        "int": {
+            "name": "NSNumber",
+            "defaultInit": "0"
+        },
+        "double": {
+            "name": "NSNumber",
+            "defaultInit": "0.0"
+        },
+        "long": {
+            "name": "NSNumber",
+            "defaultInit": "0"
+        },
+        "float": {
+            "name": "NSNumber",
+            "defaultInit": "0.0"
+        },
+        "string": {
+            "name": "NSString",
+            "defaultInit": "string.Empty"
+        },
+        "date": {
+            "name": "NSDate",
+            "defaultInit": "DateTime.Now"
+        },
+        "object": {
+            "name": "{{type_name}}",
+            "defaultInit": "new {{type_name}}()"
+        }
+    },
+    "class": {
+        "base": "@interface {{class_name}} : {{optional_class_inherit}} {\n\n}\n\n{{scaf_prop}}\n{{scaf_method}}\n\n@end\n",
+        "base_inherits": "{{inherits}}",
+        "prop": "@property (copy) {{prop_type}} *{{prop_name}};\n",
+        "method": "-({{method_return_type}}*){{method_name}}{{scaf_param}};\n",
+        "method_param_head": ": ({{param_type}}){{param_name}}",
+        "method_param_tail": " {{param_name}}:({{param_type}}){{param_name}}"
+    },
+    "blah": {
+        "base": "@implementation {{class_name}} {\n\n\tdef __init__(self):\n{{scaf_prop}}\n{{scaf_method}}",
+        "base_inherits": "({{inherits}})",
+        "prop": "\t\tself.{{prop_name}} = None\n",
+        "method": "\tdef {{method_name}}(self{{scaf_param}}):\n\t\tpass\n\n",
+        "method_param_head": ", {{param_name}}",
+        "method_param_tail": ", {{param_name}}"
+    },
+    "enum": {
+        "base": "typedef enum {{enum_name}} {\n{{scaf_enum_options}}} {{enum_name}};\n",
+        "option_no_value": "k{{option_name}},\n",
+        "option_with_value": "\tk{{option_name}} = {{option_value}}\n"
+    },
+    "struct": {},
+    "interface": {}
+}
