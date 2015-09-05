@@ -1,4 +1,4 @@
-import re, os, json
+import sys, re, os, json, getopt
 
 def LoadTemplate(jsonFile):
     with open(jsonFile) as data_file:
@@ -184,34 +184,60 @@ def GetTypeProperty(type, propertyName):
 
 
 
-
-
-
-currentPath = os.path.dirname(os.path.abspath(__file__))
-
-structurePath = os.path.join(currentPath, "structure")
-structureFilename = os.path.join(structurePath, "sampleStruct.json")
-structure = LoadStructure(structureFilename)
-
-templatePath = os.path.join(currentPath, "templates")
-templateFilename = os.path.join(templatePath, "csharp.json")
-template = LoadTemplate(templateFilename)
-
-result = ""
-
-
-for objType in structure["root"]:
-    objContents = structure["root"][objType]
+class AgnosticScaffolder:
     
-    if objType == 'class':
-        result += BuildClass(template, objContents)
-    elif objType == 'interface':
-        result += BuildInterface(template, objContents)
-    elif objType == 'enum':
-        result += BuildEnum(template, objContents)
-    elif objType == 'struct':
-        result += BuildStruct(template, objContents)
-    result += "\n"
+    def __init__(self, configfile, structurefile, templatefile, outputfolder):
         
-print(result)
+        currentPath = os.path.dirname(os.path.abspath(__file__))
 
+        structurePath = os.path.join(currentPath, "structure")
+        structureFilename = os.path.join(structurePath, structurefile)
+        structure = LoadStructure(structureFilename)
+
+        templatePath = os.path.join(currentPath, "templates")
+        templateFilename = os.path.join(templatePath, templatefile)
+        template = LoadTemplate(templateFilename)
+
+        result = ""
+
+        for objType in structure["root"]:
+            objContents = structure["root"][objType]
+    
+            if objType == 'class':
+                result += BuildClass(template, objContents)
+            elif objType == 'interface':
+                result += BuildInterface(template, objContents)
+            elif objType == 'enum':
+                result += BuildEnum(template, objContents)
+            elif objType == 'struct':
+                result += BuildStruct(template, objContents)
+            result += "\n"
+        
+        print(result)
+
+
+def main(argv):
+    structurefile = ""
+    templatefile = ""
+    configfile = ""
+    outputfolder = ""
+    
+    try:
+        opts, args = getopt.getopt(argv, "s:t:c:o:", ["structure", "template", "config", "ouput"])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-s", "--structure"):
+            structurefile = arg
+        elif opt in ("-t", "--template"):
+            templatefile = arg
+        elif opt in ("-c", "--config"):
+            configfile = arg
+        elif opt in ("-o", "--output"):
+            outputfile = arg
+            
+    a = AgnosticScaffolder(configfile, structurefile, templatefile, outputfolder)
+            
+if __name__ == "__main__":
+    main(sys.argv[1:])
