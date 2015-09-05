@@ -26,11 +26,12 @@ def BuildClass(template, dict):
     prop_text = BuildProperties(tmp, dict["properties"])
     text = text.replace("{{scaf_prop}}", prop_text)
 
-    method_text = BuildMethods(tmp, dict["methods"], typeMap)
+    method_text = BuildMethods(tmp, dict["methods"])
     text = text.replace("{{scaf_method}}", method_text)
 
     return text
-    
+
+#Build and return struct string based on the template
 def BuildStruct(template, dict):
     if "struct" not in template:
         return ""
@@ -49,10 +50,25 @@ def BuildStruct(template, dict):
     
 def BuildInterface(template, dict):
     if "interface" not in template:
-        
         return ""
-        
-    return ""
+    
+    tmp = template["interface"]
+    
+    SetTypeMap(template)
+    
+    text = tmp["base"].replace("{{interface_name}}", dict["name"])
+    
+    inherit_text = tmp["base_inherits"].replace("{{inherits}}", dict["inherits"]) if "inherits" in dict else ""
+
+    prop_text = BuildProperties(tmp, dict["properties"]) if "properties" in dict else ""
+    
+    text = text.replace("{{scaf_interface_props}}", prop_text)
+    
+    method_text = BuildMethods(tmp, dict["methods"]) if "methods" in dict else ""
+    
+    text = text.replace("{{scaf_interface_methods}}", method_text)
+    
+    return text
 
 def BuildProperties(tmp, dict):
     if "prop" not in tmp:
@@ -70,7 +86,7 @@ def BuildProperties(tmp, dict):
         result += text
     return result
     
-def BuildMethods(tmp, dict, typeTmp):
+def BuildMethods(tmp, dict):
     if "method" not in tmp:
         return ""
     

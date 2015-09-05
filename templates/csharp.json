@@ -52,6 +52,9 @@
 	},
 	"interface": {
 		"base": "interface {{interface_name}}\n{{{scaf_interface_props}}\n{{scaf_interface_methods}}\n}",
-		"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}};\n"
+		"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}} { get; set; }\n",
+		"method": "\t{{method_access}} {{method_return_type}} {{method_name}}({{scaf_param}});\n",
+		"method_param_head": "{{param_type}} {{param_name}}",
+		"method_param_tail": ", {{param_type}} {{param_name}}"
 	}
 }
