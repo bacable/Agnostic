@@ -223,12 +223,16 @@ def main(argv):
     outputfolder = ""
     
     try:
-        opts, args = getopt.getopt(argv, "s:t:c:o:", ["structure", "template", "config", "ouput"])
+        opts, args = getopt.getopt(argv, "hs:t:c:o:", ["help","structure=", "template=", "config=", "ouput="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
     for opt, arg in opts:
-        if opt in ("-s", "--structure"):
+        print("opt:" + opt + ", arg:" + arg)
+        if opt in ("-h", "--help"):
+            print("help")
+            usage()
+        elif opt in ("-s", "--structure"):
             structurefile = arg
         elif opt in ("-t", "--template"):
             templatefile = arg
@@ -237,7 +241,11 @@ def main(argv):
         elif opt in ("-o", "--output"):
             outputfile = arg
             
-    a = AgnosticScaffolder(configfile, structurefile, templatefile, outputfolder)
+    if structurefile is not "" and templatefile is not "":
+        a = AgnosticScaffolder(configfile, structurefile, templatefile, outputfolder)
+            
+def usage():
+    print("usage function")
             
 if __name__ == "__main__":
     main(sys.argv[1:])
