@@ -1,0 +1,22 @@
+{
+	"class": {
+		"base": "class {{class_name}}\n{{scaf_const}}\n{{scaf_method}}\nend",
+		"base_inherits": "",
+		"const": "\tdef initialize({{scaf_const_params}})\n{{scaf_prop}}\tend\n",
+		"prop": "\t\t@{{prop_name}} = nil\n",
+		"method": "\tdef {{method_name}}({{scaf_param}})\n\t\traise 'not implemented'\n\tend\n",
+		"method_param_head": "{{param_name}}",
+		"method_param_tail": ", {{param_name}}"
+	},
+	"enum": {
+		"base": "",
+		"option_no_value": "",
+		"option_with_value": ""
+	},
+	"struct": {
+		"base":""
+	},
+	"interface": {
+		"base":""
+	}
+}

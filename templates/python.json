@@ -1,7 +1,8 @@
 {
 	"class": {
-		"base": "class {{class_name}}{{optional_class_inherit}}:\n\n\tdef __init__(self):\n{{scaf_prop}}\n{{scaf_method}}",
+		"base": "class {{class_name}}{{optional_class_inherit}}:\n\n{{scaf_const}}{{scaf_prop}}\n{{scaf_method}}",
 		"base_inherits": "({{inherits}})",
+		"const": "\tdef __init__(self{{scaf_const_params}}):\n",
 		"prop": "\t\tself.{{prop_name}} = None\n",
 		"method": "\tdef {{method_name}}(self{{scaf_param}}):\n\t\tpass\n\n",
 		"method_param_head": ", {{param_name}}",
@@ -13,7 +14,9 @@
 		"option_with_value": "\t{{option_name}} = {{option_value}}\n"
 	},
 	"struct": {
+		"base":""
 	},
 	"interface": {
+		"base":""
 	}
 }

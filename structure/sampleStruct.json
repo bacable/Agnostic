@@ -57,6 +57,19 @@
         "class": {
             "name": "Bear",
             "inherits": "Animal",
+            "constructor":
+                {
+                    "parameters":[
+                        {
+                            "name": "bearWrapper",
+                            "type": "IBear"
+                        },
+                        {
+                            "name": "naptimeWrapper",
+                            "type": "INapTime"
+                        }
+                    ]
+                },
             "properties": [
                 {
                     "name": "Height",

@@ -23,12 +23,29 @@ def BuildClass(template, dict):
     inherit_text = tmp["base_inherits"].replace("{{inherits}}", dict["inherits"]) if "inherits" in dict else ""
     text = text.replace("{{optional_class_inherit}}", inherit_text)
     
+    const_text = BuildConstructor(tmp, dict, dict["constructor"])
+    text = text.replace("{{scaf_const}}", const_text)
+    
     prop_text = BuildProperties(tmp, dict["properties"])
     text = text.replace("{{scaf_prop}}", prop_text)
 
     method_text = BuildMethods(tmp, dict["methods"])
     text = text.replace("{{scaf_method}}", method_text)
 
+    return text
+
+def BuildConstructor(template, classDict, constDict):
+    if "const" not in template:
+        return ""
+        
+    tmp = template["const"]
+    
+    text = tmp.replace("{{class_name}}", classDict["name"])
+    
+    print("constdict: " + str(constDict))
+    
+    text = text.replace("{{scaf_const_params}}", BuildMethodParams(template, constDict["parameters"]))
+    
     return text
 
 #Build and return struct string based on the template

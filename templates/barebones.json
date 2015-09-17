@@ -1,0 +1,22 @@
+{
+	"class": {
+		"base": "",
+		"base_inherits": "",
+		"const": "",
+		"prop": "",
+		"method": "",
+		"method_param_head": "",
+		"method_param_tail": ""
+	},
+	"enum": {
+		"base": "",
+		"option_no_value": "",
+		"option_with_value": ""
+	},
+	"struct": {
+		"base":""
+	},
+	"interface": {
+		"base":""
+	}
+}

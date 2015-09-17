@@ -34,8 +34,9 @@
 		}
 	},			
 	"class": {
-		"base": "public {{class_name}}{{optional_class_inherit}}\n{\n{{scaf_prop}}\n{{scaf_method}}}",
+		"base": "public {{class_name}}{{optional_class_inherit}}\n{\n{{scaf_prop}}\n{{scaf_const}}\n{{scaf_method}}}",
 		"base_inherits": ": {{inherits}}",
+		"const": "\tpublic {{class_name}}({{scaf_const_params}})\n\t{\n\n\t}\n",
 		"prop": "\t{{prop_access}} {{prop_type}} {{prop_name}} { get; set; }\n",
 		"method": "\t{{method_access}} {{method_return_type}} {{method_name}}({{scaf_param}})\n\t{\n\t\t\n\t}\n\n",
 		"method_param_head": "{{param_type}} {{param_name}}",
